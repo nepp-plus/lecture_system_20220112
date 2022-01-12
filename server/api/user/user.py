@@ -12,14 +12,12 @@ def test():
     db.cursor.execute(sql)
     all_list = db.cursor.fetchall()
     
-    all_users = []
     
-    for row in all_list:
-        # Users(row) : Users형태의 인스턴스 생성 => 함수들도 내장하고 있다.
-        # 인스턴스에게 곧바로 -> get_data_object() 실행 명령
-        # 해당 유져의 정보를 활용한 dict가 리턴됨
-        #  곧바로 목록의 append의 재료로 활용
-        all_users.append( Users(row).get_data_object() )
+    # 목록 for -> 한 줄 row로 추출 -> 추출된 row로 모델클래스로 가공 / dict로 재가공을 한줄로 마무리.
+    
+    # python for문을 list를 돌때 => comprehension
+    all_users = [ Users(row).get_data_object() for row in all_list ]
+    
     
     return {
         'users': all_users
