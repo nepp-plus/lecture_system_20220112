@@ -47,7 +47,7 @@ def add_post(params):
     ( {params['user_id']}, '{params['title']}', '{params['content']}' )
     """
     
-    db.insertAndCommit(sql)
+    db.executeQueryAndCommit(sql)
     
     return {
         'code': 200,
@@ -64,6 +64,14 @@ def modify_post(params):
 
 # 게시글 삭제
 def delete_post(params):
+    
+    # 파라미터 검증 -> 본인이 쓴 글이 맞는지? + 지우려는 글이 실존하는지?
+    
+    sql = f"DELETE FROM posts WHERE id = {params['post_id']}"
+    
+    db.executeQueryAndCommit(sql)
+    
     return {
-        '임시': '게시글 삭제'
+        'code': 200,
+        'message': '게시글 삭제'
     }

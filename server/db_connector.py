@@ -25,7 +25,7 @@ class DBConnector:
         self.cursor.execute(sql)
         return self.cursor.fetchone()
     
-    # 하나의 데이터 추가 -> DB 실제 기록
-    def insertAndCommit(self, sql):
+    # 하나의 데이터 추가/변경/삭제등 DB 영향 쿼리 실행 -> DB 실제 기록
+    def executeQueryAndCommit(self, sql):
         self.cursor.execute(sql)
         self.db.commit()
