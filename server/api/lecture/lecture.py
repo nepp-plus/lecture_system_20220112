@@ -1,4 +1,4 @@
-from server.model import Lectures
+from server.model import Lectures, Reviews
 from server import db
 
 def get_all_lectures(params):
@@ -85,14 +85,24 @@ def view_lecture_detail(id, params):
     
     lecture = Lectures(lecture_data)
     
-    # 2. 강의의 평점을 추가로 조회 (해당 강의의 모든 리뷰의 점수 -> 평균)
+    # 2. 모든 리뷰 내역을 추가로 첨부.
     
-    # 3. 모든 리뷰 내역을 추가로 첨부.
+    sql = f"SELECT * FROM lecture_review WHERE lecture_id = {id}"
+    
+    review_data_list = db.executeAll(sql)
+    
+    reviews = [ Reviews(row).get_data_object() for row  in review_data_list ]
+    
+    
+    # 3. 강의의 평점을 추가로 조회 (해당 강의의 모든 리뷰의 점수 -> 평균)
+    
+    
     
     return {
         'code': 200,
         'message': '강의 상세 조회',
         'data': {
-            'lecture': lecture.get_data_object()
+            'lecture': lecture.get_data_object(),
+            'reviews': reviews
         }
     }
